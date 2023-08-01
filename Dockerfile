@@ -1,26 +1,44 @@
 FROM node:13-alpine
 
-# ENV MONGO_DB_USERNAME=admin \
-#     MONGO_DB_PWD=password
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=password
 
-# RUN mkdir -p /home/app
+# Set the working directory in the container
+WORKDIR /home/app
 
-# RUN npm install
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-# COPY . /home/app
-
-# CMD ["node", "/home/app/server.js"]
-
-ARG MONGO_DB_USERNAME
-ARG MONGO_DB_PWD
-
-ENV MONGO_DB_USERNAME=${MONGO_DB_USERNAME} \
-    MONGO_DB_PWD=${MONGO_DB_PWD}
-
-RUN mkdir -p /home/app
-
+# Install app dependencies
 RUN npm install
 
-COPY . /home/app
+# Copy the rest of the application code to the working directory
+COPY . .
 
+# Expose the port on which your Node.js app will run (if applicable)
+EXPOSE 3000
+FROM node:13-alpine
+
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=password
+
+# Set the working directory in the container
+WORKDIR /home/app
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install app dependencies
+RUN npm install
+
+# Copy the rest of the application code to the working directory
+COPY . .
+
+# Expose the port on which your Node.js app will run (if applicable)
+EXPOSE 3000
+
+# Command to start your Node.js app
+CMD ["node", "server.js"]
+
+# Command to start your Node.js app
 CMD ["node", "server.js"]
