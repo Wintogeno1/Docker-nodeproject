@@ -32,7 +32,7 @@ services:
       - mongodb
       - mongo-express
     volumes:
-      - .:/home
+      - .:/home/app
       - /home/app/node_modules
 
 volumes:
